@@ -1,15 +1,17 @@
 # Histórico de cotações gerado localmente (dados de teste)
 cotação.csv
- 
+
 # Ambientes virtuais Python
 venv/
 env/
 .venv/
- 
+
 # Cache do Python
 __pycache__/
 *.pyc
- 
+
+# Arquivo temporário gerado pela extensão Code Runner
+tempCodeRunnerFile.py
+
 # Configurações de editor
 .vscode/
- 
