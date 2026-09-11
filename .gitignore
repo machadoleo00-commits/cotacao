@@ -1,0 +1,15 @@
+# Histórico de cotações gerado localmente (dados de teste)
+cotação.csv
+ 
+# Ambientes virtuais Python
+venv/
+env/
+.venv/
+ 
+# Cache do Python
+__pycache__/
+*.pyc
+ 
+# Configurações de editor
+.vscode/
+ 
