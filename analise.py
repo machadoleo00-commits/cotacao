@@ -1,6 +1,11 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 df = pd.read_csv('cotação.csv')
-print(df.head())
-print(f'Média: {df['valor'].mean()}')
-print(f'Valor máximo: {df['valor'].max()}')
-print(f'Valor minimo: {df['valor'].min()}')
+
+plt.plot(df['data'],df['valor'])
+plt.xticks(rotation = 45)
+plt.title('Cotação')
+plt.xlabel('Data/Hora')
+plt.ylabel('Valor(R$)')
+plt.tight_layout()
+plt.show()
