@@ -5,21 +5,19 @@ import os
 class ColetorDeCotacoes:
     def __init__(self, moeda):
         self.moeda = moeda
-        self.date = None
-        self.bid = None
+        self.date = {}
+        self.bid = {}
 
 
     def buscar_cotacao(self):
-        resposta = requests.get(f'https://economia.awesomeapi.com.br/json/last/{self.moeda}')
+        resposta = requests.get(f'https://economia.awesomeapi.com.br/json/last/{','.join(self.moeda)}')
         dados = resposta.json()
-        print(dados['USDBRL']['bid'])
-        self.bid = dados['USDBRL']['bid']
-        self.date = dados['USDBRL']['create_date']
-        if not os.path.exists('cotação.csv'):
+        for moeda in self.moeda:
+            chave = moeda.replace('-','')
+            self.bid[moeda] = dados[chave]['bid']
+            self.date[moeda] = dados[chave]['create_date']
+            if not os.path.exists('cotação.csv'):
                 with open('cotação.csv', 'a') as arquivo:
-                    arquivo.write('data,valor\n')
-        with open('cotação.csv', 'a') as arquivo:
-            arquivo.write(f'{dados['USDBRL']['create_date']},{dados['USDBRL']['bid']}\n')
-
-coletor_dolar = ColetorDeCotacoes('USD-BRL')
-coletor_dolar.buscar_cotacao()
+                    arquivo.write('data,moeda,valor\n')
+            with open('cotação.csv', 'a') as arquivo:
+                arquivo.write(f'{self.date[moeda]},{moeda},{self.bid[moeda]}\n')
