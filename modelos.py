@@ -10,14 +10,19 @@ class ColetorDeCotacoes:
 
 
     def buscar_cotacao(self):
-        resposta = requests.get(f'https://economia.awesomeapi.com.br/json/last/{','.join(self.moeda)}')
-        dados = resposta.json()
-        for moeda in self.moeda:
-            chave = moeda.replace('-','')
-            self.bid[moeda] = dados[chave]['bid']
-            self.date[moeda] = dados[chave]['create_date']
-            if not os.path.exists('cotação.csv'):
+        try:
+            resposta = requests.get(f'https://economia.awesomeapi.com.br/json/last/{','.join(self.moeda)}')
+            dados = resposta.json()
+            for moeda in self.moeda:
+                chave = moeda.replace('-','')
+                self.bid[moeda] = dados[chave]['bid']
+                self.date[moeda] = dados[chave]['create_date']
+                if not os.path.exists('cotação.csv'):
+                    with open('cotação.csv', 'a') as arquivo:
+                        arquivo.write('data,moeda,valor\n')
                 with open('cotação.csv', 'a') as arquivo:
-                    arquivo.write('data,moeda,valor\n')
-            with open('cotação.csv', 'a') as arquivo:
-                arquivo.write(f'{self.date[moeda]},{moeda},{self.bid[moeda]}\n')
+                    arquivo.write(f'{self.date[moeda]},{moeda},{self.bid[moeda]}\n')
+        except requests.exceptions.RequestException as erro:
+            print(f'erro ao buscar cotação: {erro}')
+        except KeyError as erro:
+            print(f'erro ao ler JSON: {erro}')

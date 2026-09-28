@@ -4,7 +4,7 @@ Projeto em Python que consulta periodicamente a cotação de várias moedas (USD
 
 ## Estrutura do projeto
 
-- `modelos.py` — contém a classe `ColetorDeCotacoes`, responsável por buscar a cotação atual de uma lista de moedas (em uma única requisição) e salvar no histórico (`cotação.csv`).
+- `modelos.py` — contém a classe `ColetorDeCotacoes`, responsável por buscar a cotação atual de uma lista de moedas (em uma única requisição) e salvar no histórico (`cotação.csv`). A coleta é resiliente a falhas.
 - `index.py` — ponto de entrada do programa: cria o coletor com a lista de moedas e roda em loop contínuo, buscando novas cotações a cada 30 minutos.
 - `analise.py` — lê o histórico salvo, calcula média, máximo e mínimo por moeda com pandas (`groupby`), exibe a evolução de cada moeda em gráficos separados com matplotlib e salva o resultado em `grafico.png`.
 - `cotação.csv` — histórico de cotações coletadas (gerado localmente, não versionado, ver `.gitignore`).
@@ -22,6 +22,7 @@ Projeto em Python que consulta periodicamente a cotação de várias moedas (USD
   ```
 
 - Roda continuamente, coletando novas cotações a cada 30 minutos, sem precisar de agendamento externo ao Python.
+- Trata falhas de conexão/API (`requests.exceptions.RequestException`) e de formato inesperado no JSON (`KeyError`) sem derrubar o loop: o erro é registrado no terminal e a coleta tenta novamente na próxima execução agendada.
 - Lê o histórico com `pandas` e calcula média, valor máximo e valor mínimo separados por moeda.
 - Gera um gráfico de linha por moeda (cada um com sua própria escala), mostrando a evolução da cotação ao longo do tempo, e salva a imagem em `grafico.png` (1500x1200 pixels).
 
@@ -48,9 +49,10 @@ Para acompanhar outras moedas, basta alterar a lista passada ao `ColetorDeCotaco
 
 ## Status
 
-Projeto concluído com as funcionalidades principais: coleta agendada de múltiplas moedas, histórico, análise estatística por moeda e visualização gráfica com exportação em imagem.
+Projeto concluído com as funcionalidades principais: coleta agendada e resiliente de múltiplas moedas, histórico, análise estatística por moeda e visualização gráfica com exportação em imagem.
 
 ## Possíveis melhorias futuras
 
 - Rodar a coleta como serviço em segundo plano (sem precisar manter o terminal aberto)
 - Abrir o arquivo de histórico uma única vez por coleta, em vez de uma vez por moeda
+- Registrar os erros em um arquivo de log, além de exibi-los no terminal
