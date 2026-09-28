@@ -6,7 +6,7 @@ print(f'media: {df.groupby('moeda')['valor'].mean()}')
 print(f'maximo: {df.groupby('moeda')['valor'].max()}')
 print(f'minimo: {df.groupby('moeda')['valor'].min()}')
 
-fig, eixos = plt.subplots(3, 1)
+fig, eixos = plt.subplots(3, 1, figsize=(10, 8))
 
 for posicao, moeda in enumerate(df['moeda'].unique()):
     dados_moeda = df[ df['moeda'] == moeda ]
@@ -14,10 +14,6 @@ for posicao, moeda in enumerate(df['moeda'].unique()):
     eixos[posicao].set_title(f'Cotação {moeda}')
     eixos[posicao].tick_params(axis='x', rotation=45)
 plt.tight_layout()
+plt.savefig('grafico.pdf', dpi=150)
 plt.show()
 
-#plt.plot(df['data'],df['valor'])
-#plt.xticks(rotation = 45)
-#plt.title('Cotação')
-#plt.xlabel('Data/Hora')
-#plt.ylabel('Valor(R$)')

@@ -1,6 +1,9 @@
 # Histórico de cotações gerado localmente (dados de teste)
 cotação.csv
 
+# Gráfico gerado pelo analise.py (muda a cada execução)
+grafico.png
+
 # Ambientes virtuais Python
 venv/
 env/
